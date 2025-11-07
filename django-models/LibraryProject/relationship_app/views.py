@@ -1,19 +1,36 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
+from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic.detail import DetailView  # ✅ ALX checker requires this exact line
-from .models import Book
-from .models import Library  # ✅ Explicit import required by checker
 
 
-# ✅ Function-based view to list all books
-def list_books(request):
-    books = Book.objects.all()
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+# User Registration View
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('list_books')  # redirect after successful registration
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 
-# ✅ Class-based view using DetailView
-class LibraryDetailView(DetailView):
-    model = Library
-    template_name = 'relationship_app/library_detail.html'
-    context_object_name = 'library'
+# User Login View
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('list_books')  # redirect after successful login
+    else:
+        form = AuthenticationForm()
+    return render(request, 'relationship_app/login.html', {'form': form})
 
+
+# User Logout View
+def logout_view(request):
+    logout(request)
+    return render(request, 'relationship_app/logout.html')
