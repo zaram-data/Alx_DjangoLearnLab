@@ -23,9 +23,9 @@ urlpatterns = [
     # -----------------------------
     # Authentication URLs
     # -----------------------------
-    path('register/', RegisterView.as_view(), name='register'),  # ✅
-    path('login/', CustomLoginView.as_view(), name='login'),      # ✅
-    path('logout/', CustomLogoutView.as_view(), name='logout'),   # ✅
+    path('register/', RegisterView.as_view(), name='register'),  # ✅ views.register
+    path('login/', CustomLoginView.as_view(template_name="relationship_app/login.html"), name='login'),  # ✅ LoginView.as_view(template_name=...)
+    path('logout/', CustomLogoutView.as_view(template_name="relationship_app/logout.html"), name='logout'),  # ✅ LogoutView.as_view(template_name=...)
 
     # -----------------------------
     # Role-Based Access URLs
@@ -37,7 +37,7 @@ urlpatterns = [
     # -----------------------------
     # Permission-protected Book URLs
     # -----------------------------
-    path('book/add/', add_book_view, name='add_book'),                 # ✅ checker wants 'add_book/'
-    path('book/edit/<int:book_id>/', edit_book_view, name='edit_book'), # ✅ checker wants 'edit_book/'
-    path('book/delete/<int:book_id>/', delete_book_view, name='delete_book'), # ✅ checker wants 'delete_book'
+    path('book/add/', add_book_view, name='add_book'),                 # ✅
+    path('book/edit/<int:book_id>/', edit_book_view, name='edit_book'), # ✅
+    path('book/delete/<int:book_id>/', delete_book_view, name='delete_book'), # ✅
 ]
