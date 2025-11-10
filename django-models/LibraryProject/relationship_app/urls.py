@@ -37,7 +37,7 @@ urlpatterns = [
     # -----------------------------
     # Permission-protected Book URLs
     # -----------------------------
-    path('book/add/', add_book_view, name='add_book'),                 # ✅
-    path('book/edit/<int:book_id>/', edit_book_view, name='edit_book'), # ✅
-    path('book/delete/<int:book_id>/', delete_book_view, name='delete_book'), # ✅
+    path('book/add/', add_book_view, name='add_book'),                 # ✅ add_book/
+    path('book/edit/<int:book_id>/', edit_book_view, name='edit_book'), # ✅ edit_book/
+    path('book/delete/<int:book_id>/', delete_book_view, name='delete_book'), # ✅ delete_book/
 ]
