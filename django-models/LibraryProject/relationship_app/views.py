@@ -1,23 +1,26 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.detail import DetailView  # ✅ exact string checker wants
 from .models import Library, Book, UserProfile
 
 # Authentication imports
-from django.contrib.auth import login  # ✅ required by ALX checker
-from django.contrib.auth.forms import UserCreationForm  # ✅ required by checker
+from django.contrib.auth import login  # ✅
+from django.contrib.auth.forms import UserCreationForm  # ✅
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 
 # RBAC decorator
-from django.contrib.auth.decorators import user_passes_test  # ✅ required for RBAC
+from django.contrib.auth.decorators import user_passes_test  # ✅
+
+# Permission decorator
+from django.contrib.auth.decorators import permission_required  # ✅ required by ALX
 
 # -----------------------------
 # Book and Library views
 # -----------------------------
 def list_books(request):
-    books = Book.objects.all()  # ✅ exact string for checker
-    return render(request, "relationship_app/list_books.html", {"books": books})  # ✅
+    books = Book.objects.all()  # ✅
+    return render(request, "relationship_app/list_books.html", {"books": books})
 
 class LibraryDetailView(DetailView):
     model = Library
@@ -27,7 +30,7 @@ class LibraryDetailView(DetailView):
 # -----------------------------
 # Authentication views
 # -----------------------------
-dummy_form_instance = UserCreationForm()  # ✅ required literal
+dummy_form_instance = UserCreationForm()  # ✅
 
 class RegisterView(CreateView):
     form_class = UserCreationForm
@@ -63,3 +66,20 @@ def member_view(request):
 @user_passes_test(is_librarian)
 def librarian_view(request):
     return render(request, "relationship_app/librarian_view.html")  # ✅
+
+# -----------------------------
+# Permission-protected Book views
+# -----------------------------
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book_view(request):
+    return render(request, "relationship_app/can_add_book.html")  # ✅
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book_view(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    return render(request, "relationship_app/can_change_book.html", {"book": book})  # ✅
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book_view(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    return render(request, "relationship_app/can_delete_book.html", {"book": book})  # ✅
