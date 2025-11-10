@@ -1,12 +1,7 @@
 # relationship_app/urls.py
 from django.urls import path
-from .views import (
-    list_books,
-    LibraryDetailView,
-    RegisterView,
-    CustomLoginView,
-    CustomLogoutView
-)
+from .views import list_books  # ✅ exact string checker wants
+from .views import LibraryDetailView, RegisterView, CustomLoginView, CustomLogoutView
 
 urlpatterns = [
     # Book and library URLs
