@@ -129,21 +129,33 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ----------------------
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+# ===================== SECURITY ENHANCEMENTS =====================
 
+# Force HTTPS redirect for all requests
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
 
+# HSTS (HTTP Strict Transport Security)
+SECURE_HSTS_SECONDS = 31536000           # One year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True    # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True               # Allow site to be preloaded by browsers
 
+# Secure cookies
+SESSION_COOKIE_SECURE = True             # Only transmit session cookies over HTTPS
+CSRF_COOKIE_SECURE = True                # Only transmit CSRF cookies over HTTPS
+
+# Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True         # Enable XSS filtering
+X_FRAME_OPTIONS = 'DENY'                 # Prevent clickjacking by denying framing
+SECURE_CONTENT_TYPE_NOSNIFF = True       # Prevent MIME type sniffing
+
+# Optional: Content Security Policy (CSP)
 # Content Security Policy
 CSP_DEFAULT_SRC = ("'self'",)               # allow content only from your domain
 CSP_SCRIPT_SRC = ("'self'", "https://cdnjs.cloudflare.com")  # allow scripts from self + CDN
 CSP_STYLE_SRC = ("'self'", "https://cdnjs.cloudflare.com")   # allow styles from self + CDN
 CSP_IMG_SRC = ("'self'", "data:")          # allow images from self and data URIs
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")       # allow fonts from Google Fonts
+
+
 
 
