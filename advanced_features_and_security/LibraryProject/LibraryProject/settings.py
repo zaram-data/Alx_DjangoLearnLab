@@ -148,6 +148,9 @@ SECURE_BROWSER_XSS_FILTER = True         # Enable XSS filtering
 X_FRAME_OPTIONS = 'DENY'                 # Prevent clickjacking by denying framing
 SECURE_CONTENT_TYPE_NOSNIFF = True       # Prevent MIME type sniffing
 
+# Recognize HTTPS when behind a proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Optional: Content Security Policy (CSP)
 # Content Security Policy
 CSP_DEFAULT_SRC = ("'self'",)               # allow content only from your domain
