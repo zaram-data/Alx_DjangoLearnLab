@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#y)8b3dpp3us-zg5r#%a^57_29w5n3r=z&=7f01#_07u%-xywm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'your-domain.com']
 
 
 # Application definition
@@ -48,6 +48,7 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -73,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'LibraryProject.wsgi.application'
+WSGI_APPLICATION = 'LibraryProject.LibraryProject.wsgi.application'
 
 
 # Database
@@ -127,3 +128,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ----------------------
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+
+
+
+# Content Security Policy
+CSP_DEFAULT_SRC = ("'self'",)               # allow content only from your domain
+CSP_SCRIPT_SRC = ("'self'", "https://cdnjs.cloudflare.com")  # allow scripts from self + CDN
+CSP_STYLE_SRC = ("'self'", "https://cdnjs.cloudflare.com")   # allow styles from self + CDN
+CSP_IMG_SRC = ("'self'", "data:")          # allow images from self and data URIs
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com")       # allow fonts from Google Fonts
+
+
