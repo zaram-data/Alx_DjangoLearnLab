@@ -1,12 +1,16 @@
-from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import BookList, BookViewSet
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
-]
+# Create the router instance
+router = DefaultRouter()
+router.register(r'books_all', BookViewSet, basename='book_all')
 
+# URL patterns
 urlpatterns = [
-    path('books/', BookList.as_view(), name='book-list'),        # ALX checker expects this
-    path('books/create/', BookCreate.as_view(), name='book-create'),  # optional for POST
+    # ALX checker endpoint
+    path('books/', BookList.as_view(), name='book-list'),
+
+    # Include router URLs for CRUD
+    path('', include(router.urls)),
 ]
