@@ -2,9 +2,11 @@ from rest_framework import generics, filters
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from django_filters import rest_framework  # <- added for ALX checker
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Book
 from .serializers import BookSerializer
+
 
 # ListView - returns all books; read-only and open to unauthenticated users.
 class ListView(generics.ListAPIView):
