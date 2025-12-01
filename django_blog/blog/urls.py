@@ -11,13 +11,13 @@ urlpatterns = [
     # Blog post views (CRUD)
     path('', views.PostListView.as_view(), name='blog-home'),
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
-    path('post/new/', views.PostCreateView.as_view(), name='post-create'),
+    path('post/new/', views.PostCreateView.as_view(), name='post_new'),
     path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name='post-update'),
-    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'),
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post_delete'),
     
     path('post/<int:pk>/', views.post_detail, name='post_detail'),
-    path('posts/<int:post_id>/comments/new/', views.CommentCreateView.as_view(), name='comment_new'),
-    path('comments/<int:pk>/edit/', views.CommentUpdateView.as_view(), name='comment_edit'),
-    path('comments/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),
+    path('posts/<int:pk>/comments/new/', views.CommentCreateView.as_view(), name='comment_new'),
+    path('comment/<int:pk>/edit/', views.CommentUpdateView.as_view(), name='comment_edit'),
+    path('comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),
 ]
 
