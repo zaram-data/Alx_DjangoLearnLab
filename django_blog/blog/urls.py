@@ -9,7 +9,7 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
 
     # Blog post views (CRUD)
-    path('', views.PostListView.as_view(), name='home'),
+    path('', views.PostListView.as_view(), name='blog-home'),
     path('posts/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
     path('posts/new/', views.PostCreateView.as_view(), name='post-create'),
     path('posts/<int:pk>/edit/', views.PostUpdateView.as_view(), name='post-update'),
