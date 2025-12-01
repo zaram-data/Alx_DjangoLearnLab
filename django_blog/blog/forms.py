@@ -14,7 +14,7 @@ class RegisterForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content']  # author is set automatically in views
+        fields = ['title', 'content', 'tags']  # author is set automatically in views
 
 
 class CommentForm(forms.ModelForm):
