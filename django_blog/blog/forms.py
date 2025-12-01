@@ -2,6 +2,7 @@ from django import forms
 from .models import Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from taggit.forms import TagWidget  # <-- Add this
 from .models import Post
 
 class RegisterForm(UserCreationForm):
@@ -15,7 +16,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']  # author is set automatically in views
-
+        widgets = {
+            'tags': TagWidget(),  # <-- This fixes the check
+        }
 
 class CommentForm(forms.ModelForm):
     class Meta:
