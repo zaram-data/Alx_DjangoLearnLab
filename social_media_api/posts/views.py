@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, generics, permissions, filters
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS, BasePermission
 from django_filters.rest_framework import DjangoFilterBackend  # ✅ import this
 from .models import Post, Comment
@@ -33,3 +33,12 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class FeedAPIView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(author__in=user.following.all()).order_by('-created_at')

@@ -2,6 +2,7 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, get_user_model
 
@@ -49,3 +50,26 @@ class UserDetailAPIView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = User.objects.all()
     lookup_field = 'username'
+
+
+
+class FollowUserAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+        if request.user == target_user:
+            return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+        target_user.followers.add(request.user)
+        return Response({"detail": f"You are now following {target_user.username}."}, status=status.HTTP_200_OK)
+
+
+class UnfollowUserAPIView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, user_id):
+        target_user = get_object_or_404(User, id=user_id)
+        if request.user == target_user:
+            return Response({"detail": "You cannot unfollow yourself."}, status=status.HTTP_400_BAD_REQUEST)
+        target_user.followers.remove(request.user)
+        return Response({"detail": f"You have unfollowed {target_user.username}."}, status=status.HTTP_200_OK)
