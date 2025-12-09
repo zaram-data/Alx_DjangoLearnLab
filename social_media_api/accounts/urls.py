@@ -8,3 +8,4 @@ urlpatterns = [
     path('profile/', ProfileAPIView.as_view(), name='profile'),
     path('user/<str:username>/', UserDetailAPIView.as_view(), name='user-detail'),
 ]
+
