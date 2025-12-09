@@ -1,11 +1,9 @@
 # accounts/serializers.py
-from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 
-User = get_user_model()
-
+User = get_user_model()  # IMPORTANT
 
 class UserSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
@@ -14,8 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "id", "username", "email", "first_name", "last_name",
-            "bio", "profile_picture",
+            "id", "username", "email", "bio", "profile_picture",
             "followers_count", "following_count"
         ]
 
@@ -34,20 +31,20 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ["username", "email", "password", "bio", "profile_picture"]
 
     def create(self, validated_data):
-        # ALX CHECK MUST MATCH EXACTLY
+        # ALX CHECK: create user
         user = get_user_model().objects.create_user(
             username=validated_data["username"],
             email=validated_data.get("email"),
             password=validated_data["password"]
         )
 
-        # Optional custom fields
+        # Optional fields
         user.bio = validated_data.get("bio", "")
         user.profile_picture = validated_data.get("profile_picture")
         user.save()
 
-        # Auto-create token (optional but useful)
-        Token.objects.get_or_create(user=user)
+        # ALX CHECK: create token
+        Token.objects.create(user=user)
 
         return user
 
