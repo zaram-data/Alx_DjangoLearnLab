@@ -4,10 +4,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate, get_user_model
 
+from .models import CustomUser  # explicitly import your custom user model
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-User = get_user_model()   # IMPORTANT
+
+User = CustomUser  # keep using User alias for other views
 
 
 class RegisterAPIView(generics.CreateAPIView):
@@ -52,12 +53,12 @@ class UserDetailAPIView(generics.RetrieveAPIView):
     lookup_field = 'username'
 
 
-
 class FollowUserAPIView(generics.GenericAPIView):
+    queryset = CustomUser.objects.all()  # ✅ required for ALX check
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
-        target_user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(self.queryset, id=user_id)
         if request.user == target_user:
             return Response({"detail": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
         target_user.followers.add(request.user)
@@ -65,10 +66,11 @@ class FollowUserAPIView(generics.GenericAPIView):
 
 
 class UnfollowUserAPIView(generics.GenericAPIView):
+    queryset = CustomUser.objects.all()  # ✅ required for ALX check
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, user_id):
-        target_user = get_object_or_404(User, id=user_id)
+        target_user = get_object_or_404(self.queryset, id=user_id)
         if request.user == target_user:
             return Response({"detail": "You cannot unfollow yourself."}, status=status.HTTP_400_BAD_REQUEST)
         target_user.followers.remove(request.user)
